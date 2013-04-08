@@ -19,13 +19,21 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-
 #ifndef __BEACONAPPLICATIONDFS_H__
 #define __BEACONAPPLICATIONDFS_H__
 
 #define __DebugApp                  0                   // debug i2c
 #define __DebugAppSerial            0                   // debug Serial1
 #define __SleepMode                 0                   // sleep mode
+
+#define _XBEE                       1
+#define _RFBEE                      0
+
+#if _XBEE
+#define BAUDRATE                    57600U
+#elif _RFBEE
+#define BAUDRATE                    38400U
+#endif
 
 #if __DebugAppSerial                                    // debug use serial1
 #define __printAppS(x)              Serial1.print(x)
@@ -60,14 +68,13 @@
 #define FRAMEEND2                   0x45                // data frame end2
 
 //bit of frame
-#define FRAMEBITSTART1              0
+#define FRAMEBITSTART1              0                   // frame data bit0
 #define FRAMEBITSTART2              1
 #define FRAMEBITSRCID               2
-#define FRAMEBITSENSOR              3
-#define FRAMEBITDESTID              4
-#define FRAMEBITFRAME               5
-#define FRAMEBITDATALEN             6
-#define FRAMEBITDATA                7
+#define FRAMEBITDESTID              3
+#define FRAMEBITFRAME               4
+#define FRAMEBITDATALEN             5
+#define FRAMEBITDATA                6
 
 // frame type
 #define FRAMETYPEBC                 1                   // broadcast
@@ -96,6 +103,10 @@
 #define WORKSTATENARMAL             3
 #define WORKSTATEBUTTON             4
 #define WORKSTATECFG                5
+
+// send dta to yeelink ,atom cloud
+#define YEEATOM                     0
+#define YEECLOUD                    1
 
 #endif
 

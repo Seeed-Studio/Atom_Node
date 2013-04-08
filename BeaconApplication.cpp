@@ -77,7 +77,6 @@ void BeaconApplication::sendDtaRfbee(unsigned char len, unsigned char *dta)
     {
         SendByteToRfbee(dta[i]);
     }
-    SendByteToRfbee((unsigned char)0x00);          // crc
     SendByteToRfbee(FRAMEEND1);
     SendByteToRfbee(FRAMEEND2);
 
@@ -93,7 +92,7 @@ void BeaconApplication::sensorBroadCast()
     {
         return ;
     }
-
+    
     if(ledMode)
     {
         BcnDrive.setLedShine(LEDCOLORGREEN, 5);
@@ -101,17 +100,25 @@ void BeaconApplication::sensorBroadCast()
     unsigned char dtaSe[10];
     SENSOR.getSensor(dtaSe);
 
-    dtaSendRf[FRAMEBITSRCID-2]      = CONFIG.idDevice;
-    dtaSendRf[FRAMEBITSENSOR-2]     = CONFIG.idSensor;          // sensor ID
-    dtaSendRf[FRAMEBITDESTID-2]     = 0;                        // broad cast
-    dtaSendRf[FRAMEBITFRAME-2]      = FRAMETYPEBC;              // frame type: bc
-    dtaSendRf[FRAMEBITDATALEN-2]    = dtaSe[0];
+    dtaSendRf[0] = CONFIG.idDevice;
+    dtaSendRf[1] = 0;
+    dtaSendRf[2] = FRAMETYPEBC;
+    dtaSendRf[3] = dtaSe[0];
 
     for(int i = 0; i<dtaSe[0]; i++)
     {
-        dtaSendRf[i+FRAMEBITDATA-2] = dtaSe[i+1];
+        dtaSendRf[i+4] = dtaSe[i+1];
     }
+    dtaSendRf[4+dtaSe[0]] = 0;
 
+    sendDtaRfbee(5+dtaSe[0], dtaSendRf);
+
+    for(int i = 4+dtaSe[0]+4; i>=2; i--)
+    {
+        dtaSendRf[i] = dtaSendRf[i-2];
+    }
+    dtaSendRf[0] = FRAMESTART1;
+    dtaSendRf[1] = FRAMESTART2;
     if(isTrigger(dtaSendRf))                        // trigger device itself
     {
         Trigger(dtaSendRf);
@@ -132,11 +139,11 @@ bool BeaconApplication::isTrigger(unsigned char *dta)
         return 0;
     }
     // it is a broadcast frame!
-    if(dta[FRAMEBITDESTID-2] == 0 && dta[FRAMEBITFRAME-2] == FRAMETYPEBC)
+    if(dta[FRAMEBITDESTID] == 0 && dta[FRAMEBITFRAME] == FRAMETYPEBC)
     {
         for(int i = 0; i<CONFIG.nTC; i++)
         {
-            if(CONFIG.TC[i][1] == dta[FRAMEBITSRCID-2])
+            if(CONFIG.TC[i][1] == dta[FRAMEBITSRCID])
             {
                 __printApp("GET TRIGGER!!\t");
                 __printlnApp(i+1);
@@ -149,7 +156,7 @@ bool BeaconApplication::isTrigger(unsigned char *dta)
                 __printApp("tc[i][1] = ");
                 __printlnApp(CONFIG.TC[i][1]);
                 __printApp("dta[FRA..] = ");
-                __printlnApp(dta[FRAMEBITSRCID-2]); //CONFIG.idDevice
+                __printlnApp(dta[FRAMEBITSRCID]); //CONFIG.idDevice
                 __printApp("CONFIG.idDevice = ");
                 __printlnApp(CONFIG.idDevice);
             }
@@ -168,11 +175,11 @@ bool BeaconApplication::isTrigger(unsigned char *dta)
 *********************************************************************************************************/
 void BeaconApplication::Trigger(unsigned char *dta)
 {
-    if(ledMode)
-    {
-        BcnDrive.setLedShine(LEDCOLORGREEN, 5);
-    }
-    //BcnDrive.setLedShine(LEDCOLORRED, 5);
+    //if(ledMode)
+    //{
+        BcnDrive.setLedShine(LEDCOLORGREEN, 10);
+    //}
+    
     unsigned char nTmp[3];
     /*
      *      IO Actuator
@@ -189,10 +196,10 @@ void BeaconApplication::Trigger(unsigned char *dta)
         {
             case ACTUATOROLED12864:
 
-            nTmp[0] = dta[3];
-            for(int i = 0; i<dta[3]; i++)
+            nTmp[0] = dta[5];
+            for(int i = 0; i<dta[5]; i++)
             {
-                nTmp[i+1] = dta[4+i];
+                nTmp[i+1] = dta[6+i];
             }
             ACTUATOR.driveActuator(nTmp);
             break;
@@ -218,11 +225,11 @@ void BeaconApplication::TriggerAnalog(unsigned char *dta)
     unsigned int cmpSmall      = 0;             // higer limit
 
     __printAppS("\r\ndta[LEN] = ");
-    __printlnAppS(dta[FRAMEBITDATALEN-2]);
+    __printlnAppS(dta[FRAMEBITDATALEN]);
 
-    if(dta[FRAMEBITDATALEN-2] == 1)
+    if(dta[FRAMEBITDATALEN] == 1)
     {
-        cmpDtaSensor = dta[EEPOFFSETACDATA-2];
+        cmpDtaSensor = dta[EEPOFFSETACDATA];
         for(int i = 0; i<2; i++)
         {
             cmpDtaSet       = cmpDtaSet<<8;
@@ -232,14 +239,14 @@ void BeaconApplication::TriggerAnalog(unsigned char *dta)
         }
     }
     else
-    for(int i = 0; i<dta[FRAMEBITDATALEN-2]; i++)
+    for(int i = 0; i<dta[FRAMEBITDATALEN]; i++)
     {
         cmpDtaSensor    = cmpDtaSensor<<8;
         cmpDtaSet       = cmpDtaSet<<8;
         cmpDtaSet      += CONFIG.TC[tcNum-1][EEPOFFSETACDATA+i];
         __printlnAppS("\r\ncmpDtaSet = :");
         __printlnAppS(cmpDtaSet);
-        cmpDtaSensor   += dta[FRAMEBITDATA+i-2];
+        cmpDtaSensor   += dta[FRAMEBITDATA+i];
     }
 
     /*
@@ -320,13 +327,12 @@ unsigned char BeaconApplication::getBatLev()
 *********************************************************************************************************/
 void BeaconApplication::sendJoin()
 {
-
-    dtaSendRf[FRAMEBITSRCID-2]      = CONFIG.idDevice;
-    dtaSendRf[FRAMEBITSENSOR-2]     = CONFIG.idSensor;
-    dtaSendRf[FRAMEBITDESTID-2]     = 0;
-    dtaSendRf[FRAMEBITFRAME-2]      = 4;
-    dtaSendRf[FRAMEBITDATALEN-2]    = 1;
-    dtaSendRf[FRAMEBITDATA-2]       = bdFreq;
+    dtaSendRf[0] = CONFIG.idDevice;
+    dtaSendRf[1] = 0;
+    dtaSendRf[2] = 4;
+    dtaSendRf[3] = 1;
+    dtaSendRf[4] = bdFreq;
+    dtaSendRf[5] = 0;
     sendDtaRfbee(6, dtaSendRf);
 }
 
@@ -336,12 +342,11 @@ void BeaconApplication::sendJoin()
 *********************************************************************************************************/
 void BeaconApplication::sendSync()
 {
-   
-    dtaSendRf[FRAMEBITSRCID-2]      = CONFIG.idDevice;
-    dtaSendRf[FRAMEBITSENSOR-2]     = CONFIG.idSensor;
-    dtaSendRf[FRAMEBITDESTID-2]     = 0;
-    dtaSendRf[FRAMEBITFRAME-2]      = 5;
-    dtaSendRf[FRAMEBITDATALEN-2]    = 0;
+    dtaSendRf[0] = CONFIG.idDevice;
+    dtaSendRf[1] = 0;
+    dtaSendRf[2] = 5;
+    dtaSendRf[3] = 0;
+    dtaSendRf[4] = 0;
     sendDtaRfbee(5, dtaSendRf);
 }
 
@@ -420,7 +425,6 @@ void BeaconApplication::buttonManage()
         {
             if(workState == WORKSTATECFG)
             {
-                BcnDrive.setLedShine(LEDCOLORRED, 1);
                 BcnDrive.setLedShine(LEDCOLORGREEN, 5);
                 stateChange(workStateBuf);
             }
@@ -450,7 +454,6 @@ void BeaconApplication::buttonManage()
             delay(200);
             BcnDrive.beepOff();
             BcnDrive.sysPowerOff();
-            
         }
         cntButtonOn     = 0;
         cntButtonOff    = 0;
@@ -474,11 +477,12 @@ void BeaconApplication::carryState()
             workStateCnt++;
             sendSync();
         }
-        else if(workStateCnt % 1000 == 40)          // broadcast sensor value
+        else if(workStateCnt % 1000 == 50)          // broadcast sensor value
         {
             workStateCnt++;
             sensorBroadCast();                      // broadcast
         }
+		
         else if(workStateCnt % 1000 == 100)         // begin to sleep
         {
             sendRfSleep();                          // tell rfbee to sleep 900ms
@@ -504,12 +508,12 @@ void BeaconApplication::carryState()
 
     else if(bdFreq == BDF100MS)
     {
-        if(workStateCnt % 100 == 5 || workStateCnt % 100 == 10)                // send sync
+        if(workStateCnt % 100 == 10)                // send sync
         {
             workStateCnt++;
             sendSync();
         }
-        else if(workStateCnt % 100 == 45)
+        else if(workStateCnt % 100 == 50)
         {
             workStateCnt++;
             sensorBroadCast();                      // broadcast
