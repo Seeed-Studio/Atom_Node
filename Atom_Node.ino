@@ -71,6 +71,7 @@ void just_for_fun(unsigned char *dta)
         }
     }
     BcnDrive.beepOn();
+    
     while(1);               // get 10 continus 0x55, down!!
 }
 
