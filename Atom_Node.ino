@@ -44,7 +44,6 @@
 #define __printlnIno(x)
 #endif
 
-
 unsigned char __GdtaUart[50];                   // uart data buff
 unsigned char __GdtaUartLen        = 0;         // uart data len
 unsigned char __GstringComplete    = 0;         // if get data
@@ -83,8 +82,6 @@ void just_for_fun(unsigned char *dta)
 unsigned char checkGoodDta(unsigned char *dta)
 {
     unsigned char ioffset = 0;
-    //just_for_fun(dta);
-    //BcnDrive.setLedShine(LEDCOLORRED, 5);
     for(ioffset = 0; ioffset < __GdtaUartLen; ioffset++)
     {
         if(dta[ioffset] == FRAMESTART1)
@@ -112,7 +109,6 @@ unsigned char checkGoodDta(unsigned char *dta)
         return 0;
     }
 
-    
     return 1;
 }
 
