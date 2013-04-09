@@ -102,8 +102,8 @@ unsigned char checkGoodDta(unsigned char *dta)
     if((__GdtaUartLen - ioffset)<6 \
         || !(   dta[0] == FRAMESTART1 \
              && dta[1] == FRAMESTART2 \
-             && dta[7+dta[5]] == FRAMEEND1 \
-             && dta[8+dta[5]] == FRAMEEND2 ))
+             && dta[8+dta[6]] == FRAMEEND1 \
+             && dta[9+dta[6]] == FRAMEEND2 ))
     {
         __GdtaUartLen     = 0;
         __GstringComplete = 0;
@@ -122,16 +122,16 @@ void rfDtaProc()
 {
     if(__GstringComplete == 1 && checkGoodDta(__GdtaUart))                      // if serial get data
     {
-        if(__GdtaUart[4] == 4)                                                  // other device join
+        if(__GdtaUart[FRAMEBITFRAME] == 4)                                      // other device join
         {
-            BeaconApp.carryDeviceId  = __GdtaUart[2];
+            BeaconApp.carryDeviceId  = __GdtaUart[FRAMEBITSRCID];
             BeaconApp.workStateCnt   = 0;
             BeaconApp.workStateBuf   = BeaconApp.workState;
             BeaconApp.stateChange(WORKSTATENARMAL);
-            BeaconApp.bdFreq         = __GdtaUart[6];                           // change freq
+            BeaconApp.bdFreq         = __GdtaUart[FRAMEBITDATA];                // change freq
             EEPROM.write(EEPADDFREQBROADCAST, BeaconApp.bdFreq);                // write to eeprom
         }
-        else if(__GdtaUart[4] == 5 && BeaconApp.workState == WORKSTATENARMAL)   // sync
+        else if(__GdtaUart[FRAMEBITFRAME] == 5 && BeaconApp.workState == WORKSTATENARMAL)   // sync
         {
             if(BeaconApp.flgGetSync == 0)
             {

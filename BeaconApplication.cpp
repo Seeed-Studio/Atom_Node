@@ -101,19 +101,20 @@ void BeaconApplication::sensorBroadCast()
     SENSOR.getSensor(dtaSe);
 
     dtaSendRf[0] = CONFIG.idDevice;
-    dtaSendRf[1] = 0;
-    dtaSendRf[2] = FRAMETYPEBC;
-    dtaSendRf[3] = dtaSe[0];
+    dtaSendRf[1] = CONFIG.idSensor;
+    dtaSendRf[2] = 0;
+    dtaSendRf[3] = FRAMETYPEBC;
+    dtaSendRf[4] = dtaSe[0];
 
     for(int i = 0; i<dtaSe[0]; i++)
     {
-        dtaSendRf[i+4] = dtaSe[i+1];
+        dtaSendRf[i+5] = dtaSe[i+1];
     }
-    dtaSendRf[4+dtaSe[0]] = 0;
+    dtaSendRf[5+dtaSe[0]] = 0;
 
-    sendDtaRfbee(5+dtaSe[0], dtaSendRf);
+    sendDtaRfbee(6+dtaSe[0], dtaSendRf);
 
-    for(int i = 4+dtaSe[0]+4; i>=2; i--)
+    for(int i = 5+dtaSe[0]+4; i>=2; i--)
     {
         dtaSendRf[i] = dtaSendRf[i-2];
     }
@@ -196,10 +197,10 @@ void BeaconApplication::Trigger(unsigned char *dta)
         {
             case ACTUATOROLED12864:
 
-            nTmp[0] = dta[5];
-            for(int i = 0; i<dta[5]; i++)
+            nTmp[0] = dta[FRAMEBITDATALEN];
+            for(int i = 0; i<dta[FRAMEBITDATALEN]; i++)
             {
-                nTmp[i+1] = dta[6+i];
+                nTmp[i+1] = dta[FRAMEBITDATA+i];
             }
             ACTUATOR.driveActuator(nTmp);
             break;
@@ -328,12 +329,13 @@ unsigned char BeaconApplication::getBatLev()
 void BeaconApplication::sendJoin()
 {
     dtaSendRf[0] = CONFIG.idDevice;
-    dtaSendRf[1] = 0;
-    dtaSendRf[2] = 4;
-    dtaSendRf[3] = 1;
-    dtaSendRf[4] = bdFreq;
-    dtaSendRf[5] = 0;
-    sendDtaRfbee(6, dtaSendRf);
+    dtaSendRf[1] = CONFIG.idSensor;
+    dtaSendRf[2] = 0;
+    dtaSendRf[3] = 4;
+    dtaSendRf[4] = 1;
+    dtaSendRf[5] = bdFreq;
+    dtaSendRf[6] = 0;
+    sendDtaRfbee(7, dtaSendRf);
 }
 
 /*********************************************************************************************************
@@ -343,11 +345,12 @@ void BeaconApplication::sendJoin()
 void BeaconApplication::sendSync()
 {
     dtaSendRf[0] = CONFIG.idDevice;
-    dtaSendRf[1] = 0;
-    dtaSendRf[2] = 5;
-    dtaSendRf[3] = 0;
+    dtaSendRf[1] = CONFIG.idSensor;
+    dtaSendRf[2] = 0;
+    dtaSendRf[3] = 5;
     dtaSendRf[4] = 0;
-    sendDtaRfbee(5, dtaSendRf);
+    dtaSendRf[5] = 0;
+    sendDtaRfbee(6, dtaSendRf);
 }
 
 /*********************************************************************************************************

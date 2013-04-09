@@ -71,10 +71,11 @@
 #define FRAMEBITSTART1              0                   // frame data bit0
 #define FRAMEBITSTART2              1
 #define FRAMEBITSRCID               2
-#define FRAMEBITDESTID              3
-#define FRAMEBITFRAME               4
-#define FRAMEBITDATALEN             5
-#define FRAMEBITDATA                6
+#define FRAMEBITSENSORID            3
+#define FRAMEBITDESTID              4
+#define FRAMEBITFRAME               5
+#define FRAMEBITDATALEN             6
+#define FRAMEBITDATA                7
 
 // frame type
 #define FRAMETYPEBC                 1                   // broadcast
