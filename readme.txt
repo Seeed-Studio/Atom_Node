@@ -12,5 +12,7 @@
 新的carry方式，最后配置的beacon负责网络的carry
 四种广播时间
 
+2013-4-22 test in pi
+r
 2012-3-13
 解决了两个beacon相互触发的bug，解决方法是调整了发送sync和broadcast的时间
