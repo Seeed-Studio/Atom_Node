@@ -61,22 +61,6 @@ void timer1ISR()
     }
 }
 
-void just_for_fun(unsigned char *dta)
-{
-
-    for(int i = 0; i<5; i++)
-    {
-        if(dta[i+2] != 0x55)
-        {
-            return ;
-        }
-    }
-    
-    BcnDrive.beepOn();
-    
-    while(1);               // get 10 continus 0x55, down!!
-}
-
 /*********************************************************************************************************
 ** Function name:           checkGoodDta
 ** Descriptions:            if uart get good data
@@ -122,7 +106,18 @@ void rfDtaProc()
 {
     if(__GstringComplete == 1 && checkGoodDta(__GdtaUart))                      // if serial get data
     {
-        if(__GdtaUart[FRAMEBITFRAME] == 4 && CONFIG.ifCloud==0)                                      // other device join
+    
+        if(__GdtaUart[FRAMEBITSRCID] == 0 && CONFIG.ifCloud == 0)               // cloud join
+        {
+            CONFIG.ifCloud = 1;
+            BeaconApp.carryDeviceId  = __GdtaUart[FRAMEBITSRCID];
+            BeaconApp.workStateCnt   = 0;
+            BeaconApp.workStateBuf   = BeaconApp.workState;
+            BeaconApp.stateChange(WORKSTATENARMAL);
+            BeaconApp.bdFreq         = __GdtaUart[FRAMEBITDATA];                // change freq
+            EEPROM.write(EEPADDFREQBROADCAST, BeaconApp.bdFreq);                // write to eeprom
+        }
+        else if(__GdtaUart[FRAMEBITFRAME] == 4 && CONFIG.ifCloud==0)            // other device join
         {
             BeaconApp.carryDeviceId  = __GdtaUart[FRAMEBITSRCID];
             BeaconApp.workStateCnt   = 0;
@@ -143,6 +138,7 @@ void rfDtaProc()
         {
             BeaconApp.Trigger(__GdtaUart);
         }
+
         __GdtaUartLen      = 0;
         __GstringComplete  = 0;
     }
