@@ -536,7 +536,7 @@ void NodeApp::supportState()
     }
     else if(bdFreq == BDF100MS)
     {
-        if(workStateCnt % 100 == 50)               // broadcast sensor value
+        if(workStateCnt % 100 == 50)                // broadcast sensor value
         {
             workStateCnt++;
             sensorBroadCast();                      // broadcast

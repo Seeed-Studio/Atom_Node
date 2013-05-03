@@ -107,10 +107,9 @@ bool NodeCfg::lightConfig()
         EEPROM.write(EEPADDIFSETSE, 0x00);
         EEPROM.write(EEPADDIFSETAC, 0x00);
         EEPROM.write(EEPADDDEVICEID, dtaLight[1]);
-
     }
 
-    else if((dtaLight[0] == 0x51) && (lenLight == 5))                // config device id & sensor id
+    else if((dtaLight[0] == 0x51) && (lenLight == 5))               // config device id & sensor id
     {
         EEPROM.write(EEPADDDEVICEID, dtaLight[1]);
         EEPROM.write(EEPADDISSET, 0x55);
@@ -118,10 +117,9 @@ bool NodeCfg::lightConfig()
         EEPROM.write(EEPADDIFSETAC, 0x00);
         EEPROM.write(EEPADDSENSORID, dtaLight[3]);
         EEPROM.write(EEPADDFREQBROADCAST, dtaLight[4]);
-
     }
 
-    else if((dtaLight[0] == 0x51) && (lenLight == 9))           // config device id & actuator
+    else if((dtaLight[0] == 0x51) && (lenLight == 9))               // config device id & actuator
     {
         EEPROM.write(EEPADDISSET, 0x55);
         EEPROM.write(EEPADDDEVICEID, dtaLight[1]);
@@ -129,8 +127,8 @@ bool NodeCfg::lightConfig()
         EEPROM.write(EEPADDIFSETAC, 0x55);
         EEPROM.write(EEPADDACTUATORID, dtaLight[3]);
         EEPROM.write(EEPADDACTCN, 1);
-        EEPROM.write(EEPADDTCSTART+EEPOFFSETACLEN, 7);                          // ?
-        EEPROM.write(EEPADDTCSTART+EEPOFFSETACDESTID, dtaLight[4]);             // ?
+        EEPROM.write(EEPADDTCSTART+EEPOFFSETACLEN, 7);
+        EEPROM.write(EEPADDTCSTART+EEPOFFSETACDESTID, dtaLight[4]);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACACTIONTYPE, dtaLight[5]);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACOMTYPE, dtaLight[6]);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATALEN, 1);
@@ -138,6 +136,7 @@ bool NodeCfg::lightConfig()
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATA, dtaLight[7]);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATA+1, dtaLight[8]);
     }
+    
     else if((dtaLight[0] == 0x51) && (lenLight == 12))                   // config all
     {
         // device id
@@ -153,8 +152,8 @@ bool NodeCfg::lightConfig()
         EEPROM.write(EEPADDIFSETAC, 0x55);
         EEPROM.write(EEPADDACTUATORID, dtaLight[6]);
         EEPROM.write(EEPADDACTCN, 1);
-        EEPROM.write(EEPADDTCSTART+EEPOFFSETACLEN, 7);                  // ?
-        EEPROM.write(EEPADDTCSTART+EEPOFFSETACDESTID, dtaLight[7]);     // ?
+        EEPROM.write(EEPADDTCSTART+EEPOFFSETACLEN, 7);                 
+        EEPROM.write(EEPADDTCSTART+EEPOFFSETACDESTID, dtaLight[7]);    
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACACTIONTYPE, dtaLight[8]);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACOMTYPE, dtaLight[9]);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATALEN, 1);
@@ -163,11 +162,13 @@ bool NodeCfg::lightConfig()
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATA+1, dtaLight[11]);
 
     }
+    
     else if(lenLight > 0)
     {
         BcnDrive.setLedShine(LEDCOLORGREEN, 50);
         return 0;
     }
+    
     else                                                                // bad data
     {
         BcnDrive.setLedShine(LEDCOLORGREEN, 50);
@@ -180,6 +181,7 @@ bool NodeCfg::lightConfig()
     SENSOR.init(idSensor);
     ACTUATOR.init(idActuator);
     APP.init();
+    
     return 1;
 
 }
