@@ -29,8 +29,8 @@
 #include <BeaconDrive.h>
 #include <EEPROM.h>
 
-#include "BeaconApplication.h"
-#include "BeaconConfig.h"
+#include "NodeApp.h"
+#include "NodeCfg.h"
 
 /*********************************************************************************************************
 ** Function name:           init

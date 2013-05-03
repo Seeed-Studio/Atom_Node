@@ -32,8 +32,8 @@
 #include <Sleep_n0m1.h>
 #include <SeeedOLED.h>
 
-#include "BeaconApplication.h"
-#include "BeaconConfig.h"
+#include "NodeApp.h"
+#include "NodeCfg.h"
 
 #define __DebugIno      0
 

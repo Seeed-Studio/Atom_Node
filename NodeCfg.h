@@ -1,5 +1,5 @@
 /*
-  BeaconConfig.h
+  NodeCfg.h
   2012 Copyright (c) Seeed Technology Inc.  All right reserved.
 
   Author:Loovee

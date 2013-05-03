@@ -31,8 +31,8 @@
 #include <I2C_Uart.h>
 #include <BeaconDrive.h>
 
-#include "BeaconApplication.h"
-#include "BeaconConfig.h"
+#include "NodeApp.h"
+#include "NodeCfg.h"
 
 /*********************************************************************************************************
 ** Function name:           init
@@ -162,8 +162,6 @@ bool BeaconConfig::lightConfig()
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATALONG, 2);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATA, dtaLight[7]);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATA+1, dtaLight[8]);
-
-
     }       
     else if((dtaLight[0] == 0x51) && (lenLight == 12))                   // config all
     {
@@ -208,7 +206,7 @@ bool BeaconConfig::lightConfig()
     SENSOR.init(idSensor); 
     ACTUATOR.init(idActuator);
     BeaconApp.init();
-     return 1;
+    return 1;
 }
 
 BeaconConfig CONFIG;
