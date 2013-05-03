@@ -186,7 +186,6 @@ void BeaconApplication::Trigger(unsigned char *dta)
      *      IO Actuator
      */
 
-    __printAppS("trigger");
     if(CONFIG.idActuator <= 200)        // IO
     {
         TriggerAnalog(dta);
@@ -225,9 +224,6 @@ void BeaconApplication::TriggerAnalog(unsigned char *dta)
     unsigned int cmpLarge      = 0;             // lower limit
     unsigned int cmpSmall      = 0;             // higer limit
 
-    __printAppS("\r\ndta[LEN] = ");
-    __printlnAppS(dta[FRAMEBITDATALEN]);
-
     if(dta[FRAMEBITDATALEN] == 1)
     {
         cmpDtaSensor = dta[EEPOFFSETACDATA];
@@ -235,8 +231,6 @@ void BeaconApplication::TriggerAnalog(unsigned char *dta)
         {
             cmpDtaSet       = cmpDtaSet<<8;
             cmpDtaSet      += CONFIG.TC[tcNum-1][EEPOFFSETACDATA+i];
-            __printlnAppS("\r\ncmpDtaSet = :");
-            __printlnAppS(cmpDtaSet);
         }
     }
     else
@@ -245,8 +239,6 @@ void BeaconApplication::TriggerAnalog(unsigned char *dta)
         cmpDtaSensor    = cmpDtaSensor<<8;
         cmpDtaSet       = cmpDtaSet<<8;
         cmpDtaSet      += CONFIG.TC[tcNum-1][EEPOFFSETACDATA+i];
-        __printlnAppS("\r\ncmpDtaSet = :");
-        __printlnAppS(cmpDtaSet);
         cmpDtaSensor   += dta[FRAMEBITDATA+i];
     }
 
@@ -271,12 +263,6 @@ void BeaconApplication::TriggerAnalog(unsigned char *dta)
         default:
         ;
     }
-
-    __printlnAppS("TRIGGER:");
-    __printAppS("cmpLarge = ");
-    __printlnAppS(cmpLarge);
-    __printAppS("cmpSmall = ");
-    __printlnAppS(cmpSmall);
 
     unsigned char dtaCmp = (cmpDtaSensor >= cmpSmall && cmpDtaSensor <= cmpLarge);
 
@@ -390,10 +376,6 @@ void BeaconApplication::buttonManage()
 
     if(cntButtonOn > TURNOFFDELAYTIME-5)                // turn off
     {
-        __printlnAppS("TURN OFF");
-        __printAppS("cntButtonOn = ");
-        __printlnAppS(cntButtonOn);
-
         cntButtonOn = 0;
         BcnDrive.beepOn();
         delay(200);

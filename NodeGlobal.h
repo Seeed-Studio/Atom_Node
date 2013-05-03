@@ -25,7 +25,6 @@
 #define __NODEGLOBAL_H__
 
 #define __DebugApp                  0                   // debug i2c
-#define __DebugAppSerial            0                   // debug Serial1
 #define __SleepMode                 0                   // sleep mode
 
 #define _XBEE                       0
@@ -35,14 +34,6 @@
 #define BAUDRATE                    57600U
 #elif _RFBEE
 #define BAUDRATE                    38400U
-#endif
-
-#if __DebugAppSerial                                    // debug use serial1
-#define __printAppS(x)              Serial1.print(x)
-#define __printlnAppS(x)            Serial1.println(x)
-#else
-#define __printAppS(x)
-#define __printlnAppS(x)
 #endif
 
 #if __DebugApp
