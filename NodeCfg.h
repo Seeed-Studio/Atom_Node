@@ -27,8 +27,7 @@
 #include "NodeGlobal.h"
 
 class BeaconConfig{
-    
-    
+
     public:
     
     unsigned char ifSetDevice;          // if config device
@@ -43,15 +42,9 @@ class BeaconConfig{
     unsigned char ifSetActuator;        // if config actuator
     unsigned char idActuator;           // id of actuator
     
-    unsigned char TC[12];          // TC
-    
-    private:
-    
-    unsigned char dtaLight[10];
-    //unsigned char lenLight;
-    
+    unsigned char TC[12];               // TC
+
     public:
-    
     void init();
     bool lightConfig();                 // config!
     

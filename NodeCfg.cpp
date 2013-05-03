@@ -53,24 +53,22 @@ void BeaconConfig::init()
 
     idDevice = EEPROM.read(EEPADDDEVICEID);
 
-    /*
-     *  config sensor
-     */
+    //config sensor
+    
     ifSetSensor = EEPROM.read(EEPADDIFSETSE);
     if(ifSetSensor == 0x55)
     {
-        idSensor    = EEPROM.read(EEPADDSENSORID);                      // id of sensor
+        idSensor    = EEPROM.read(EEPADDSENSORID);                              // id of sensor
         freqSensor  = EEPROM.read(EEPADDFREQBROADCAST);
 
     }
 
-    /*
-     *  config actuator
-     */
+
+    // config actuator
 
     ifSetActuator = EEPROM.read(EEPADDIFSETAC);
 
-    if(ifSetActuator == 0x55)        // been config
+    if(ifSetActuator == 0x55)                                                   // been config
     {
         idActuator = EEPROM.read(EEPADDACTUATORID);
 
@@ -99,6 +97,8 @@ bool BeaconConfig::lightConfig()
     {
         return 0;
     }
+    
+    unsigned char dtaLight[12];
     unsigned char lenLight = LightCom1.Recv(dtaLight);
 
     if((dtaLight[0] == 0x51) && (lenLight == 2))                    // config device id
@@ -161,7 +161,7 @@ bool BeaconConfig::lightConfig()
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATALONG, 2);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATA, dtaLight[10]);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATA+1, dtaLight[11]);
-
+        
     }
 	else if(lenLight > 0)
 	{
@@ -170,7 +170,6 @@ bool BeaconConfig::lightConfig()
 	}
     else                                                                // bad data
     {
-
         BcnDrive.setLedShine(LEDCOLORGREEN, 50);
         return 0;
     }
@@ -182,6 +181,7 @@ bool BeaconConfig::lightConfig()
     ACTUATOR.init(idActuator);
     BeaconApp.init();
     return 1;
+    
 }
 
 BeaconConfig CONFIG;
