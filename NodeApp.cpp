@@ -140,14 +140,12 @@ bool BeaconApplication::isTrigger(unsigned char *dta)
     // it is a broadcast frame!
     if(dta[FRAMEBITDESTID] == 0 && dta[FRAMEBITFRAME] == FRAMETYPEBC)
     {
-        for(int i = 0; i<CONFIG.nTC; i++)
-        {
-            if(CONFIG.TC[i][1] == dta[FRAMEBITSRCID])
+
+            if(CONFIG.TC[1] == dta[FRAMEBITSRCID])
             {
                 tcNum = i+1;
                 return tcNum;
             }
-        }
     }
 
     return 0;

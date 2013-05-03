@@ -73,9 +73,7 @@ void BeaconConfig::init()
     if(ifSetActuator == 0x55)        // been config
     {
         idActuator = EEPROM.read(EEPADDACTUATORID);
-        nTC        = EEPROM.read(EEPADDACTCN);
 
-        
         int eepAddOffCnt = 0;
         for(int i = 0; i<nTC; i++)
         {
