@@ -34,7 +34,6 @@
 
 #include "BeaconApplication.h"
 #include "BeaconConfig.h"
-#include "BeaconApplicationDfs.h"
 
 #define __DebugIno      0
 

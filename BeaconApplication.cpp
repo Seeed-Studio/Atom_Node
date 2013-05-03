@@ -31,8 +31,6 @@
 
 #include "BeaconApplication.h"
 #include "BeaconConfig.h"
-#include "BeaconApplicationDfs.h"
-#include "BeaconConfigDfs.h"
 
 /*********************************************************************************************************
 ** Function name:           init

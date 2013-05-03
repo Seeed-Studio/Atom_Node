@@ -24,7 +24,7 @@
 #ifndef __BEACONAPPLICATION_H__
 #define __BEACONAPPLICATION_H__
 
-#include "BeaconApplicationDfs.h"
+#include "NodeGlobal.h"
 
 class BeaconApplication{
 

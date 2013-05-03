@@ -33,8 +33,6 @@
 
 #include "BeaconApplication.h"
 #include "BeaconConfig.h"
-#include "BeaconConfigDfs.h"
-#include "BeaconApplicationDfs.h"
 
 /*********************************************************************************************************
 ** Function name:           init
@@ -42,8 +40,6 @@
 *********************************************************************************************************/
 void BeaconConfig::init()
 {
-    __printlnCfg("CONFIG: INIT!");
-    
     ifCloud     = 0;
 
     freqSensor  = EEPROM.read(EEPADDFREQBROADCAST);
@@ -52,13 +48,11 @@ void BeaconConfig::init()
     
     if(ifSetDevice != 0x55)
     {
-        __printlnCfg("CONFIG: DEVICE NOT CONFIG!");
         return;
     }
 
     idDevice = EEPROM.read(EEPADDDEVICEID);
-    __printCfg("CONFIG: idDevice = ");
-    __printlnCfg(idDevice);
+
     /*
      *  config sensor
      */
@@ -69,25 +63,18 @@ void BeaconConfig::init()
         freqSensor  = EEPROM.read(EEPADDFREQBROADCAST);
 
     }
-    else
-    {
-        __printlnCfg("CONFIG: SENSOR NOT CONFIG");
-    }
 
     /*
      *  config actuator
      */
 
     ifSetActuator = EEPROM.read(EEPADDIFSETAC);
-    __printCfg("ifSetActuator = ");__printlnCfg(ifSetActuator);
 
     if(ifSetActuator == 0x55)        // been config
     {
         idActuator = EEPROM.read(EEPADDACTUATORID);
         nTC        = EEPROM.read(EEPADDACTCN);
-        
-        __printCfg("idActuator = ");__printlnCfg(idActuator);
-        __printCfg("nTC = ");__printlnCfg(nTC);
+
         
         int eepAddOffCnt = 0;
         for(int i = 0; i<nTC; i++)
@@ -95,8 +82,6 @@ void BeaconConfig::init()
             TC[i][eepAddOffCnt] = EEPROM.read(EEPADDTCSTART + eepAddOffCnt);        // len of each tc
             delay(5);
             unsigned char cnTmp = TC[i][eepAddOffCnt++];
-
-            __printCfg("cnTmp = ");__printlnCfg(cnTmp);
 
             for(int j = 0; j<cnTmp; j++)                                            // read other data of tc
             {
@@ -110,25 +95,6 @@ void BeaconConfig::init()
             TC[0][0] = 10;
         }
 
-        __printCfg("CONFIG: IDACTUATOR:\t");
-        __printlnCfg(idActuator);
-        __printCfg("CONFIG: NTC:\t");
-        __printlnCfg(nTC);
-
-        __printCfg("TC[i][0] = ");__printlnCfg(TC[0][0]);
-        for(int i = 0; i<nTC; i++)
-        {
-            for(int j = 0; j<TC[i][0]+1; j++)
-            {
-                __printCfg(TC[i][j]);
-                __printCfg("\t");
-            }
-            __printlnCfg();
-        }
-    }
-    else
-    {
-        __printlnCfg("CONFIG:ACTUATOR HAS NOT BEEN CONFIGED!");
     }
 
 }
@@ -162,8 +128,6 @@ bool BeaconConfig::lightConfig()
 
     if((dtaLight[0] == 0x51) && (lenLight == 2))                    // config device id
     {
-        __printlnCfg("CONFIG: get config device id!");
-        __printCfg("lenLight = ");__printlnCfg(lenLight);
         EEPROM.write(EEPADDISSET, 0x55);
         EEPROM.write(EEPADDIFSETSE, 0x00);
         EEPROM.write(EEPADDIFSETAC, 0x00);
@@ -233,13 +197,7 @@ bool BeaconConfig::lightConfig()
 	}
     else                                                                // bad data
     {
-        __printlnCfg("CONFIG: get config bad data!");
-        for(int i = 0; i<lenLight; i++)
-        {
-            __printCfg(dtaLight[i]);
-            __printCfg("\t");
-        }
-        __printlnCfg();
+
         BcnDrive.setLedShine(LEDCOLORGREEN, 50);
         return 0;
     }
@@ -248,12 +206,9 @@ bool BeaconConfig::lightConfig()
 
     init();
     SENSOR.init(idSensor); 
-    __printlnCfg("init Sensor over!");
     ACTUATOR.init(idActuator);
-    __printlnCfg("init Actuator over!");
     BeaconApp.init();
-    __printlnCfg("init Application over!");
-    return 1;
+     return 1;
 }
 
 BeaconConfig CONFIG;
