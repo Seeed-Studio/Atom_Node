@@ -28,8 +28,8 @@
 #define __DebugAppSerial            0                   // debug Serial1
 #define __SleepMode                 0                   // sleep mode
 
-#define _XBEE                       1
-#define _RFBEE                      0
+#define _XBEE                       0
+#define _RFBEE                      1
 
 #if _XBEE
 #define BAUDRATE                    57600U

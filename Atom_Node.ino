@@ -56,25 +56,11 @@ unsigned char __GstringComplete    = 0;         // if get data
 *********************************************************************************************************/
 void timer1ISR()
 {
-    BeaconApp.appTimerIsr();                    // application isr
+    BeaconApp.appTimerIsr();                        // application isr
     if(BeaconApp.workState == WORKSTATECFG)
     {
-        LightCom1.TIMEISR();                    // light com isr
+        LightCom1.TIMEISR();                        // light com isr
     }
-}
-
-void just_for_fun(unsigned char *dta)
-{
-    for(int i = 0; i<5; i++)
-    {
-        if(dta[i+2] != 0x55)
-        {
-            return ;
-        }
-    }
-    BcnDrive.beepOn();
-    
-    while(1);               // get 10 continus 0x55, down!!
 }
 
 /*********************************************************************************************************
@@ -122,7 +108,18 @@ void rfDtaProc()
 {
     if(__GstringComplete == 1 && checkGoodDta(__GdtaUart))                      // if serial get data
     {
-        if(__GdtaUart[FRAMEBITFRAME] == 4)                                      // other device join
+    
+        if(__GdtaUart[FRAMEBITSRCID] == 0 && CONFIG.ifCloud == 0)               // cloud join
+        {
+            CONFIG.ifCloud = 1;
+            BeaconApp.carryDeviceId  = __GdtaUart[FRAMEBITSRCID];
+            BeaconApp.workStateCnt   = 0;
+            BeaconApp.workStateBuf   = BeaconApp.workState;
+            BeaconApp.stateChange(WORKSTATENARMAL);
+            BeaconApp.bdFreq         = __GdtaUart[FRAMEBITDATA];                // change freq
+            EEPROM.write(EEPADDFREQBROADCAST, BeaconApp.bdFreq);                // write to eeprom
+        }
+        else if(__GdtaUart[FRAMEBITFRAME] == 4 && CONFIG.ifCloud==0)            // other device join
         {
             BeaconApp.carryDeviceId  = __GdtaUart[FRAMEBITSRCID];
             BeaconApp.workStateCnt   = 0;
@@ -137,13 +134,13 @@ void rfDtaProc()
             {
                 BeaconApp.workStateCnt = 0;
                 BeaconApp.flgGetSync   = 1;
-                
             }
         }
         else if((BeaconApp.workState == WORKSTATECARRY || BeaconApp.workState == WORKSTATENARMAL) && BeaconApp.isTrigger(__GdtaUart))     // if the data trigger
         {
             BeaconApp.Trigger(__GdtaUart);
         }
+
         __GdtaUartLen      = 0;
         __GstringComplete  = 0;
     }

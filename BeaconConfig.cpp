@@ -190,8 +190,8 @@ bool BeaconConfig::lightConfig()
 		EEPROM.write(EEPADDIFSETAC, 0x55);
         EEPROM.write(EEPADDACTUATORID, dtaLight[3]);
         EEPROM.write(EEPADDACTCN, 1);
-        EEPROM.write(EEPADDTCSTART+EEPOFFSETACLEN, 7);                  // ?
-        EEPROM.write(EEPADDTCSTART+EEPOFFSETACDESTID, dtaLight[4]);            // ?
+        EEPROM.write(EEPADDTCSTART+EEPOFFSETACLEN, 7);                          // ?
+        EEPROM.write(EEPADDTCSTART+EEPOFFSETACDESTID, dtaLight[4]);             // ?
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACACTIONTYPE, dtaLight[5]);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACOMTYPE, dtaLight[6]);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATALEN, 1);
