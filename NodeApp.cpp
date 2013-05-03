@@ -1,5 +1,5 @@
 /*
-  BeaconApplication.cpp
+  NodeApp.cpp
   2012 Copyright (c) Seeed Technology Inc.  All right reserved.
 
   Author:Loovee
@@ -36,7 +36,7 @@
 ** Function name:           init
 ** Descriptions:            init
 *********************************************************************************************************/
-void BeaconApplication::init()
+void NodeApp::init()
 {
     carryDeviceId   = CONFIG.idDevice;
     workState       = WORKSTATEJOIN;
@@ -57,7 +57,7 @@ void BeaconApplication::init()
 ** Function name:           appTimerIsr
 ** Descriptions:            appTimerIsr
 *********************************************************************************************************/
-void BeaconApplication::appTimerIsr()
+void NodeApp::appTimerIsr()
 {
     BcnDrive.ledIsr();
     cntButton++;
@@ -69,7 +69,7 @@ void BeaconApplication::appTimerIsr()
 ** Function name:           sendDtaRfbee
 ** Descriptions:            send buf to rfbee
 *********************************************************************************************************/
-void BeaconApplication::sendDtaRfbee(unsigned char len, unsigned char *dta)
+void NodeApp::sendDtaRfbee(unsigned char len, unsigned char *dta)
 {
     SendByteToRfbee(FRAMESTART1);
     SendByteToRfbee(FRAMESTART2);
@@ -86,7 +86,7 @@ void BeaconApplication::sendDtaRfbee(unsigned char len, unsigned char *dta)
 ** Function name:           sensorBroadCast
 ** Descriptions:            BroadCast sensor value now
 *********************************************************************************************************/
-void BeaconApplication::sensorBroadCast()
+void NodeApp::sensorBroadCast()
 {
     if(CONFIG.ifSetSensor != 0x55)
     {
@@ -130,7 +130,7 @@ void BeaconApplication::sensorBroadCast()
 ** Function name:           isTrigger
 ** Descriptions:            if trigger
 *********************************************************************************************************/
-bool BeaconApplication::isTrigger(unsigned char *dta)
+bool NodeApp::isTrigger(unsigned char *dta)
 {
 
     if(CONFIG.ifSetActuator != 0x55)
@@ -154,7 +154,7 @@ bool BeaconApplication::isTrigger(unsigned char *dta)
 ** Function name:           Trigger
 ** Descriptions:            do something
 *********************************************************************************************************/
-void BeaconApplication::Trigger(unsigned char *dta)
+void NodeApp::Trigger(unsigned char *dta)
 {
     if(ledMode)
     {
@@ -194,7 +194,7 @@ void BeaconApplication::Trigger(unsigned char *dta)
 ** Function name:           TriggerAnalog
 ** Descriptions:            trigger when analog
 *********************************************************************************************************/
-void BeaconApplication::TriggerAnalog(unsigned char *dta)
+void NodeApp::TriggerAnalog(unsigned char *dta)
 {
 
     unsigned int cmpDtaSensor   = 0;
@@ -255,7 +255,7 @@ void BeaconApplication::TriggerAnalog(unsigned char *dta)
 ** Function name:           getBatLev
 ** Descriptions:            get battery level
 *********************************************************************************************************/
-unsigned char BeaconApplication::getBatLev()
+unsigned char NodeApp::getBatLev()
 {
     unsigned int uiA2 = analogRead(A2);
 
@@ -292,7 +292,7 @@ unsigned char BeaconApplication::getBatLev()
 ** Function name:           sendJoin
 ** Descriptions:            sendJoin
 *********************************************************************************************************/
-void BeaconApplication::sendJoin()
+void NodeApp::sendJoin()
 {
     dtaSendRf[0] = CONFIG.idDevice;
     dtaSendRf[1] = CONFIG.idSensor;
@@ -308,7 +308,7 @@ void BeaconApplication::sendJoin()
 ** Function name:           sendSync
 ** Descriptions:            tell other devices to sync
 *********************************************************************************************************/
-void BeaconApplication::sendSync()
+void NodeApp::sendSync()
 {
     dtaSendRf[0] = CONFIG.idDevice;
     dtaSendRf[1] = CONFIG.idSensor;
@@ -323,7 +323,7 @@ void BeaconApplication::sendSync()
 ** Function name:           sendRfSleep
 ** Descriptions:            tell rfbee to sleep
 *********************************************************************************************************/
-void BeaconApplication::sendRfSleep()
+void NodeApp::sendRfSleep()
 {
     dtaSendRf[0] = 0x55;
     dtaSendRf[1] = 0x55;
@@ -336,7 +336,7 @@ void BeaconApplication::sendRfSleep()
 ** Function name:           buttonManage
 ** Descriptions:            button
 *********************************************************************************************************/
-void BeaconApplication::buttonManage()
+void NodeApp::buttonManage()
 {
     unsigned char completeHit = 0;
     
@@ -431,7 +431,7 @@ void BeaconApplication::buttonManage()
 ** Function name:           carryState
 ** Descriptions:            carryState
 *********************************************************************************************************/
-void BeaconApplication::carryState()
+void NodeApp::carryState()
 {
     if(carryDeviceId != CONFIG.idDevice)return ;
 
@@ -494,7 +494,7 @@ void BeaconApplication::carryState()
 ** Function name:           supportState
 ** Descriptions:            supportState
 *********************************************************************************************************/
-void BeaconApplication::supportState()
+void NodeApp::supportState()
 {
     if(!flgGetSync)return;
     
@@ -552,7 +552,7 @@ void BeaconApplication::supportState()
 ** Function name:           workStateMachine
 ** Descriptions:            workStateMachine
 *********************************************************************************************************/
-void BeaconApplication::workStateMachine()
+void NodeApp::workStateMachine()
 {
 
     if(CONFIG.ifSetDevice != 0x55 && workState != WORKSTATECFG)
@@ -621,12 +621,12 @@ void BeaconApplication::workStateMachine()
 ** Function name:           stateChange
 ** Descriptions:            goto state
 *********************************************************************************************************/
-void BeaconApplication::stateChange(unsigned char state)
+void NodeApp::stateChange(unsigned char state)
 {
     workState = state;
 }
 
-BeaconApplication BeaconApp;
+NodeApp BeaconApp;
 /*********************************************************************************************************
   END FILE
 *********************************************************************************************************/

@@ -1,5 +1,5 @@
 /*
-  BeaconApplication.h
+  NodeApp.h
   2012 Copyright (c) Seeed Technology Inc.  All right reserved.
 
   Author:Loovee
@@ -26,7 +26,7 @@
 
 #include "NodeGlobal.h"
 
-class BeaconApplication{
+class NodeApp{
 
 private:
 
@@ -76,7 +76,7 @@ public:
     
 };
 
-extern BeaconApplication BeaconApp;
+extern NodeApp BeaconApp;
 #endif
 
 /*********************************************************************************************************

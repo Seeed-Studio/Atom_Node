@@ -26,7 +26,7 @@
 
 #include "NodeGlobal.h"
 
-class BeaconConfig{
+class NodeCfg{
 
     public:
     
@@ -50,7 +50,7 @@ class BeaconConfig{
     
 };
 
-extern BeaconConfig CONFIG;
+extern NodeCfg CONFIG;
 
 #endif
 

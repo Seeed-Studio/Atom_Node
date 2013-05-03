@@ -1,5 +1,5 @@
 /*
-  BeaconConfig.cpp
+  NodeCfg.cpp
   2012 Copyright (c) Seeed Technology Inc.  All right reserved.
 
   Author:Loovee
@@ -38,7 +38,7 @@
 ** Function name:           init
 ** Descriptions:            init
 *********************************************************************************************************/
-void BeaconConfig::init()
+void NodeCfg::init()
 {
     ifCloud     = 0;
 
@@ -90,7 +90,7 @@ void BeaconConfig::init()
 ** Function name:           lightConfig
 ** Descriptions:            config
 *********************************************************************************************************/
-bool BeaconConfig::lightConfig()
+bool NodeCfg::lightConfig()
 {
     
     if(!LightCom1.isData())
@@ -184,7 +184,7 @@ bool BeaconConfig::lightConfig()
     
 }
 
-BeaconConfig CONFIG;
+NodeCfg CONFIG;
 
 /*********************************************************************************************************
   END FILE
