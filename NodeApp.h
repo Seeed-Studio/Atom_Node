@@ -4,9 +4,9 @@
 
   Author:Loovee
   2012-12-3
-  
+
   https://github.com/reeedstudio/Atom_Node
-  
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -28,7 +28,7 @@
 
 class NodeApp{
 
-private:
+    private:
 
     unsigned int  cntButtonOn;              // button on counter
     unsigned int  cntButtonOff;             // button off counter
@@ -37,35 +37,35 @@ private:
     unsigned long cntButtonMainBuf;         // count button buf
     unsigned char cntButtonHit;             // count of hit
     unsigned char dtaSendRf[20];            // data send to rf
-    
+
     unsigned char ledMode;                  // led Mode
 
-public:
+    public:
 
-    unsigned char carryDeviceId;            // min device id   
+    unsigned char carryDeviceId;            // min device id
     unsigned char workState;                // work state
     unsigned char workStateBuf;             // work state buf
     unsigned long workStateCnt;             // count of work state
     unsigned char flgGetSync;               // get sync
     unsigned char bdFreq;                   // broadcart freq...
 
-private:
+    private:
     void sendJoin();                        // tell other devices a minId join
     void sendSync();                        // tell other devices to sync
     void sendRfSleep();                     // tell rfbee to sleep
 
     void TriggerAnalog(unsigned char *dta); // trigger when analog
-    void sensorBroadCast();                 // sensor broadcast 
-    
+    void sensorBroadCast();                 // sensor broadcast
+
     void carryState();                      // carry state
     void supportState();                    // supportState
-    
 
-public:
-    
+
+    public:
+
     void init();                            // init
-	void sendDtaRfbee(unsigned char len, 
-                      unsigned char *dta);  // send buf to rfbee
+    void sendDtaRfbee(unsigned char len,
+    unsigned char *dta);  // send buf to rfbee
     void appTimerIsr();                     // put in a tiemr isr, 1ms
     bool isTrigger(unsigned char *dta);     // if get trigger
     void Trigger(unsigned char *dta);       // trigger
@@ -73,7 +73,7 @@ public:
     void buttonManage();                    // button
     void workStateMachine();                // working state machine
     void stateChange(unsigned char state);  // change work state
-    
+
 };
 
 extern NodeApp APP;

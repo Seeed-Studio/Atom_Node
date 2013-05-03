@@ -1,12 +1,12 @@
 /*
   BeaconDemoCodeV0.2.ino
   2012 Copyright (c) Seeed Technology Inc.  All right reserved.
-  
+
   Author:Loovee
   2012-12-3
-  
+
   https://github.com/reeedstudio/Atom_Node
-  
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -41,7 +41,7 @@ unsigned char __GstringComplete    = 0;         // if get data
 
 /*********************************************************************************************************
 ** Function name:           timer1ISR
-** Descriptions:            timer interrupt service 
+** Descriptions:            timer interrupt service
 *********************************************************************************************************/
 void timer1ISR()
 {
@@ -97,7 +97,7 @@ void rfDtaProc()
 {
     if(__GstringComplete == 1 && checkGoodDta(__GdtaUart))                      // if serial get data
     {
-    
+
         if(__GdtaUart[FRAMEBITSRCID] == 0 && CONFIG.ifCloud == 0)               // cloud join
         {
             CONFIG.ifCloud = 1;
@@ -105,8 +105,8 @@ void rfDtaProc()
             APP.workStateCnt   = 0;
             APP.workStateBuf   = APP.workState;
             APP.stateChange(WORKSTATENARMAL);
-            APP.bdFreq         = __GdtaUart[FRAMEBITDATA];                // change freq
-            EEPROM.write(EEPADDFREQBROADCAST, APP.bdFreq);                // write to eeprom
+            APP.bdFreq         = __GdtaUart[FRAMEBITDATA];                      // change freq
+            EEPROM.write(EEPADDFREQBROADCAST, APP.bdFreq);                      // write to eeprom
         }
         else if(__GdtaUart[FRAMEBITFRAME] == 4 && CONFIG.ifCloud==0)            // other device join
         {
@@ -114,8 +114,8 @@ void rfDtaProc()
             APP.workStateCnt   = 0;
             APP.workStateBuf   = APP.workState;
             APP.stateChange(WORKSTATENARMAL);
-            APP.bdFreq         = __GdtaUart[FRAMEBITDATA];                // change freq
-            EEPROM.write(EEPADDFREQBROADCAST, APP.bdFreq);                // write to eeprom
+            APP.bdFreq         = __GdtaUart[FRAMEBITDATA];                      // change freq
+            EEPROM.write(EEPADDFREQBROADCAST, APP.bdFreq);                      // write to eeprom
         }
         else if(__GdtaUart[FRAMEBITFRAME] == 5 && APP.workState == WORKSTATENARMAL)   // sync
         {
@@ -141,28 +141,19 @@ void rfDtaProc()
 *********************************************************************************************************/
 void setup()
 {
-    
+
     BcnDrive.init();
     BcnDrive.sysPowerOn();                      // power on
     delay(500);
-    
+
     Serial1.begin(57600);                       // Serial1, to send/rev data from RFBee
     while(!Serial1);                            // Unitll Serial1 init over
-    
     LightCom1.init(12);                         // light com  D12: input
     CONFIG.init();                              // init config
     SENSOR.init(CONFIG.idSensor);               // init sensor
     ACTUATOR.init(CONFIG.idActuator);           // init actuator
     APP.init();                                 // init application
-    
-    while(1)                                    // while button release
-    {
-        if(digitalRead(PINSYSBUTT))
-        {
-            break;
-        }
-        delay(10);
-    }
+    RELEASSBUTTON();                            // untill button release
     Timer1.initialize(1000);                    // set a timer of length 1ms
     Timer1.attachInterrupt( timer1ISR );        // attach the service routine here
 }
@@ -174,9 +165,9 @@ void setup()
 void loop()
 {
     rfDtaProc();                                // data process
-    APP.buttonManage();                   // button manage
-    APP.workStateMachine();               // state machine
-    APP.getBatLev();                      // get batary level
+    APP.buttonManage();                         // button manage
+    APP.workStateMachine();                     // state machine
+    APP.getBatLev();                            // get batary level
     serialEvent1();                             // check serial data
 }
 
@@ -184,7 +175,7 @@ void loop()
 ** Function name:           serialEvent1
 ** Descriptions:            Serial1 event
 *********************************************************************************************************/
-void serialEvent1() 
+void serialEvent1()
 {
     while (Serial1.available())
     {

@@ -4,9 +4,9 @@
 
   Author:Loovee
   2012-12-3
-  
+
   https://github.com/reeedstudio/Atom_Node
-  
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -112,7 +112,7 @@
 #define EEPADDACTUATORID            EEPADDIFSETAC+1                     // actuator id
 #define EEPADDACTCN                 EEPADDACTUATORID+1                  // how many trigger conditions
 
-#define EEPADDTCSTART               EEPADDACTCN+1           
+#define EEPADDTCSTART               EEPADDACTCN+1
 
 #define EEPOFFSETACLEN              0                                   // length of a Trigger conditions
 #define EEPOFFSETACDESTID           EEPOFFSETACLEN+1                    // dest ID
@@ -136,7 +136,12 @@
 #define ACTIONTYPEOF                2                                   // OFF
 #define ACTIONTYPEOUTPUT            3                                   // just output, such display a data!
 
-
+#define RELEASSBUTTON()                 while(1)\
+                                        {\
+                                            if(digitalRead(PINSYSBUTT))\
+                                                break;\
+                                            delay(10);\
+                                        }\
 
 #endif
 

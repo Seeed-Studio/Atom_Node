@@ -4,7 +4,7 @@
 
   Author:Loovee
   2012-12-3
-  
+
   https://github.com/reeedstudio/Atom_Node
 
   This library is free software; you can redistribute it and/or
@@ -92,7 +92,7 @@ void NodeApp::sensorBroadCast()
     {
         return ;
     }
-    
+
     if(ledMode)
     {
         BcnDrive.setLedShine(LEDCOLORGREEN, 5);
@@ -141,10 +141,10 @@ bool NodeApp::isTrigger(unsigned char *dta)
     if(dta[FRAMEBITDESTID] == 0 && dta[FRAMEBITFRAME] == FRAMETYPEBC)
     {
 
-            if(CONFIG.TC[1] == dta[FRAMEBITSRCID])
-            {
-                return 1;
-            }
+        if(CONFIG.TC[1] == dta[FRAMEBITSRCID])
+        {
+            return 1;
+        }
     }
 
     return 0;
@@ -160,7 +160,7 @@ void NodeApp::Trigger(unsigned char *dta)
     {
         BcnDrive.setLedShine(LEDCOLORGREEN, 10);
     }
-    
+
     unsigned char nTmp[3];
     /*
      *      IO Actuator
@@ -339,7 +339,7 @@ void NodeApp::sendRfSleep()
 void NodeApp::buttonManage()
 {
     unsigned char completeHit = 0;
-    
+
     if(cntButton > 10)
     {
         cntButton = 0;
@@ -365,7 +365,7 @@ void NodeApp::buttonManage()
         delay(3000);
         BcnDrive.sysPowerOn();
     }
-    
+
     if(cntButtonOff > 3 && cntButtonOn > 1)
     {
         cntButtonHit++;
@@ -374,7 +374,7 @@ void NodeApp::buttonManage()
         cntButtonOff     = 0;
         cntButton        = 0;
     }
-    
+
     if(cntButtonHit)
     {
         if((cntButtonMain - cntButtonMainBuf) > 500)
@@ -382,7 +382,7 @@ void NodeApp::buttonManage()
             completeHit = 1;
         }
     }
-    
+
     if(completeHit)
     {
         completeHit = 0;
@@ -447,7 +447,7 @@ void NodeApp::carryState()
             workStateCnt++;
             sensorBroadCast();                      // broadcast
         }
-		
+
         else if(workStateCnt % 1000 == 100)         // begin to sleep
         {
             sendRfSleep();                          // tell rfbee to sleep 900ms
@@ -497,7 +497,7 @@ void NodeApp::carryState()
 void NodeApp::supportState()
 {
     if(!flgGetSync)return;
-    
+
     if(bdFreq == BDF1S)
     {
         if(workStateCnt % 1000 == 50)               // broadcast sensor value
@@ -609,7 +609,7 @@ void NodeApp::workStateMachine()
         case WORKSTATECFG:
 
         CONFIG.lightConfig();
-        
+
         break;
 
         default:

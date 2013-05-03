@@ -4,7 +4,7 @@
 
   Author:Loovee
   2012-12-3
-  
+
   https://github.com/reeedstudio/Atom_Node
 
   This library is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ void NodeCfg::init()
     freqSensor  = EEPROM.read(EEPADDFREQBROADCAST);
     freqSensor  = freqSensor == 0 ? BDF100MS : freqSensor;
     ifSetDevice = EEPROM.read(EEPADDISSET);
-    
+
     if(ifSetDevice != 0x55)
     {
         return;
@@ -54,7 +54,7 @@ void NodeCfg::init()
     idDevice = EEPROM.read(EEPADDDEVICEID);
 
     //config sensor
-    
+
     ifSetSensor = EEPROM.read(EEPADDIFSETSE);
     if(ifSetSensor == 0x55)
     {
@@ -92,12 +92,12 @@ void NodeCfg::init()
 *********************************************************************************************************/
 bool NodeCfg::lightConfig()
 {
-    
+
     if(!LightCom1.isData())
     {
         return 0;
     }
-    
+
     unsigned char dtaLight[12];
     unsigned char lenLight = LightCom1.Recv(dtaLight);
 
@@ -109,7 +109,7 @@ bool NodeCfg::lightConfig()
         EEPROM.write(EEPADDDEVICEID, dtaLight[1]);
 
     }
-    
+
     else if((dtaLight[0] == 0x51) && (lenLight == 5))                // config device id & sensor id
     {
         EEPROM.write(EEPADDDEVICEID, dtaLight[1]);
@@ -125,8 +125,8 @@ bool NodeCfg::lightConfig()
     {
         EEPROM.write(EEPADDISSET, 0x55);
         EEPROM.write(EEPADDDEVICEID, dtaLight[1]);
-		EEPROM.write(EEPADDIFSETSE, 0x00);
-		EEPROM.write(EEPADDIFSETAC, 0x55);
+        EEPROM.write(EEPADDIFSETSE, 0x00);
+        EEPROM.write(EEPADDIFSETAC, 0x55);
         EEPROM.write(EEPADDACTUATORID, dtaLight[3]);
         EEPROM.write(EEPADDACTCN, 1);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACLEN, 7);                          // ?
@@ -137,20 +137,20 @@ bool NodeCfg::lightConfig()
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATALONG, 2);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATA, dtaLight[7]);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATA+1, dtaLight[8]);
-    }       
+    }
     else if((dtaLight[0] == 0x51) && (lenLight == 12))                   // config all
     {
         // device id
-		EEPROM.write(EEPADDISSET, 0x55);
+        EEPROM.write(EEPADDISSET, 0x55);
         EEPROM.write(EEPADDDEVICEID, dtaLight[1]);
-		
+
         // sensor
-		EEPROM.write(EEPADDIFSETSE, 0x55);
+        EEPROM.write(EEPADDIFSETSE, 0x55);
         EEPROM.write(EEPADDSENSORID, dtaLight[3]);
         EEPROM.write(EEPADDFREQBROADCAST, dtaLight[4]);
-		
+
         // actuator
-		EEPROM.write(EEPADDIFSETAC, 0x55);
+        EEPROM.write(EEPADDIFSETAC, 0x55);
         EEPROM.write(EEPADDACTUATORID, dtaLight[6]);
         EEPROM.write(EEPADDACTCN, 1);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACLEN, 7);                  // ?
@@ -161,27 +161,27 @@ bool NodeCfg::lightConfig()
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATALONG, 2);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATA, dtaLight[10]);
         EEPROM.write(EEPADDTCSTART+EEPOFFSETACDATA+1, dtaLight[11]);
-        
+
     }
-	else if(lenLight > 0)
-	{
+    else if(lenLight > 0)
+    {
         BcnDrive.setLedShine(LEDCOLORGREEN, 50);
-		return 0;
-	}
+        return 0;
+    }
     else                                                                // bad data
     {
         BcnDrive.setLedShine(LEDCOLORGREEN, 50);
         return 0;
     }
-    
+
     BcnDrive.setLedShine(LEDCOLORGREEN, 1000000);
 
     init();
-    SENSOR.init(idSensor); 
+    SENSOR.init(idSensor);
     ACTUATOR.init(idActuator);
     APP.init();
     return 1;
-    
+
 }
 
 NodeCfg CONFIG;

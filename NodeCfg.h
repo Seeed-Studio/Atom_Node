@@ -4,9 +4,9 @@
 
   Author:Loovee
   2012-12-3
-  
+
   https://github.com/reeedstudio/Atom_Node
-  
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -29,25 +29,25 @@
 class NodeCfg{
 
     public:
-    
+
     unsigned char ifSetDevice;          // if config device
     unsigned char idDevice;             // id of device
-    
+
     unsigned char ifSetSensor;          // if config sensor
     unsigned char idSensor;             // id of sensor
-    unsigned char freqSensor;           // 
-    
+    unsigned char freqSensor;           //
+
     unsigned char ifCloud;              // if there is a cloud in the net
-    
+
     unsigned char ifSetActuator;        // if config actuator
     unsigned char idActuator;           // id of actuator
-    
+
     unsigned char TC[12];               // TC
 
     public:
     void init();
     bool lightConfig();                 // config!
-    
+
 };
 
 extern NodeCfg CONFIG;
