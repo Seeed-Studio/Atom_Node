@@ -35,16 +35,6 @@
 #include "NodeApp.h"
 #include "NodeCfg.h"
 
-#define __DebugIno      0
-
-#if __DebugIno
-#define __printIno(x)   __print(x)
-#define __printlnIno(x) __println(x)
-#else
-#define __printIno(x)
-#define __printlnIno(x)
-#endif
-
 unsigned char __GdtaUart[50];                   // uart data buff
 unsigned char __GdtaUartLen        = 0;         // uart data len
 unsigned char __GstringComplete    = 0;         // if get data
