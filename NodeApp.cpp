@@ -46,8 +46,8 @@ void NodeApp::init()
     cntButton       = 0;
     flgGetSync      = 0;
     ledMode         = 1;
-    cntButtonMainBuf    = 0;
-    cntButtonMain   = 0;
+    cntBtnMainBuf   = 0;
+    cntBtnMain      = 0;
     cntButtonHit    = 0;
     bdFreq          = CONFIG.freqSensor;
     BcnDrive.init();
@@ -62,7 +62,7 @@ void NodeApp::appTimerIsr()
     BcnDrive.ledIsr();
     cntButton++;
     workStateCnt++;
-    cntButtonMain++;
+    cntBtnMain++;
 }
 
 /*********************************************************************************************************
@@ -369,7 +369,7 @@ void NodeApp::buttonManage()
     if(cntButtonOff > 3 && cntButtonOn > 1)
     {
         cntButtonHit++;
-        cntButtonMainBuf = cntButtonMain;
+        cntBtnMainBuf = cntBtnMain;
         cntButtonOn      = 0;
         cntButtonOff     = 0;
         cntButton        = 0;
@@ -377,7 +377,7 @@ void NodeApp::buttonManage()
 
     if(cntButtonHit)
     {
-        if((cntButtonMain - cntButtonMainBuf) > 500)
+        if((cntBtnMain - cntBtnMainBuf) > 500)
         {
             completeHit = 1;
         }
