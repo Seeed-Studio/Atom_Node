@@ -88,10 +88,7 @@ void NodeApp::sendDtaRfbee(unsigned char len, unsigned char *dta)
 *********************************************************************************************************/
 void NodeApp::sensorBroadCast()
 {
-    if(CONFIG.ifSetSensor != 0x55)
-    {
-        return ;
-    }
+    if(CONFIG.ifSetSensor != 0x55)return ;
 
     if(ledMode)
     {
@@ -118,8 +115,10 @@ void NodeApp::sensorBroadCast()
     {
         dtaSendRf[i] = dtaSendRf[i-2];
     }
+    
     dtaSendRf[0] = FRAMESTART1;
     dtaSendRf[1] = FRAMESTART2;
+    
     if(isTrigger(dtaSendRf))                        // trigger device itself
     {
         Trigger(dtaSendRf);
@@ -133,21 +132,9 @@ void NodeApp::sensorBroadCast()
 bool NodeApp::isTrigger(unsigned char *dta)
 {
 
-    if(CONFIG.ifSetActuator != 0x55)
-    {
-        return 0;
-    }
-    // it is a broadcast frame!
-    if(dta[FRAMEBITDESTID] == 0 && dta[FRAMEBITFRAME] == FRAMETYPEBC)
-    {
+    if(CONFIG.ifSetActuator != 0x55)return 0;
+    return (dta[FRAMEBITDESTID] == 0 && dta[FRAMEBITFRAME] == FRAMETYPEBC && CONFIG.TC[1] == dta[FRAMEBITSRCID]) ? 1 : 0;
 
-        if(CONFIG.TC[1] == dta[FRAMEBITSRCID])
-        {
-            return 1;
-        }
-    }
-
-    return 0;
 }
 
 /*********************************************************************************************************
@@ -209,17 +196,17 @@ void NodeApp::TriggerAnalog(unsigned char *dta)
         cmpDtaSensor = dta[EEPOFFSETACDATA];
         for(int i = 0; i<2; i++)
         {
-            cmpDtaSet       = cmpDtaSet<<8;
+            cmpDtaSet       = cmpDtaSet << 8;
             cmpDtaSet      += CONFIG.TC[EEPOFFSETACDATA+i];
         }
     }
     else
     for(int i = 0; i<dta[FRAMEBITDATALEN]; i++)
     {
-        cmpDtaSensor    = cmpDtaSensor<<8;
-        cmpDtaSet       = cmpDtaSet<<8;
-        cmpDtaSet      += CONFIG.TC[EEPOFFSETACDATA+i];
-        cmpDtaSensor   += dta[FRAMEBITDATA+i];
+        cmpDtaSensor    = cmpDtaSensor << 8;
+        cmpDtaSet       = cmpDtaSet << 8;
+        cmpDtaSet      += CONFIG.TC[EEPOFFSETACDATA + i];
+        cmpDtaSensor   += dta[FRAMEBITDATA + i];
     }
 
     /*

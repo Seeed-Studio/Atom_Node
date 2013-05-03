@@ -108,6 +108,7 @@ void rfDtaProc()
             APP.bdFreq         = __GdtaUart[FRAMEBITDATA];                      // change freq
             EEPROM.write(EEPADDFREQBROADCAST, APP.bdFreq);                      // write to eeprom
         }
+        
         else if(__GdtaUart[FRAMEBITFRAME] == 4 && CONFIG.ifCloud==0)            // other device join
         {
             APP.carryDeviceId  = __GdtaUart[FRAMEBITSRCID];
@@ -117,6 +118,7 @@ void rfDtaProc()
             APP.bdFreq         = __GdtaUart[FRAMEBITDATA];                      // change freq
             EEPROM.write(EEPADDFREQBROADCAST, APP.bdFreq);                      // write to eeprom
         }
+        
         else if(__GdtaUart[FRAMEBITFRAME] == 5 && APP.workState == WORKSTATENARMAL)   // sync
         {
             if(APP.flgGetSync == 0)
@@ -125,6 +127,7 @@ void rfDtaProc()
                 APP.flgGetSync   = 1;
             }
         }
+        
         else if((APP.workState == WORKSTATECARRY || APP.workState == WORKSTATENARMAL) && APP.isTrigger(__GdtaUart))     // if the data trigger
         {
             APP.Trigger(__GdtaUart);
