@@ -28,7 +28,7 @@
 
 class NodeApp{
 
-    private:
+private:
 
     unsigned int  cntButtonOn;              // button on counter
     unsigned int  cntButtonOff;             // button off counter
@@ -37,10 +37,9 @@ class NodeApp{
     unsigned long cntButtonMainBuf;         // count button buf
     unsigned char cntButtonHit;             // count of hit
     unsigned char dtaSendRf[20];            // data send to rf
-
     unsigned char ledMode;                  // led Mode
 
-    public:
+public:
 
     unsigned char carryDeviceId;            // min device id
     unsigned char workState;                // work state
@@ -49,7 +48,8 @@ class NodeApp{
     unsigned char flgGetSync;               // get sync
     unsigned char bdFreq;                   // broadcart freq...
 
-    private:
+private:
+    
     void sendJoin();                        // tell other devices a minId join
     void sendSync();                        // tell other devices to sync
     void sendRfSleep();                     // tell rfbee to sleep
@@ -60,8 +60,7 @@ class NodeApp{
     void carryState();                      // carry state
     void supportState();                    // supportState
 
-
-    public:
+public:
 
     void init();                            // init
     void sendDtaRfbee(unsigned char len,

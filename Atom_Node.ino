@@ -1,12 +1,12 @@
 /*
   BeaconDemoCodeV0.2.ino
   2012 Copyright (c) Seeed Technology Inc.  All right reserved.
-
+  
   Author:Loovee
   2012-12-3
-
+  
   https://github.com/reeedstudio/Atom_Node
-
+  
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -35,17 +35,17 @@
 #include "NodeApp.h"
 #include "NodeCfg.h"
 
-unsigned char __GdtaUart[50];                   // uart data buff
-unsigned char __GdtaUartLen        = 0;         // uart data len
-unsigned char __GstringComplete    = 0;         // if get data
+unsigned char __GdtaUart[50];                       // uart data buff
+unsigned char __GdtaUartLen        = 0;             // uart data len
+unsigned char __GstringComplete    = 0;             // if get data
 
 /*********************************************************************************************************
 ** Function name:           timer1ISR
-** Descriptions:            timer interrupt service
+** Descriptions:            timer interrupt service 
 *********************************************************************************************************/
 void timer1ISR()
 {
-    APP.appTimerIsr();                        // application isr
+    APP.appTimerIsr();                              // application isr
     if(APP.workState == WORKSTATECFG)
     {
         LightCom1.TIMEISR();                        // light com isr
@@ -97,7 +97,7 @@ void rfDtaProc()
 {
     if(__GstringComplete == 1 && checkGoodDta(__GdtaUart))                      // if serial get data
     {
-
+    
         if(__GdtaUart[FRAMEBITSRCID] == 0 && CONFIG.ifCloud == 0)               // cloud join
         {
             CONFIG.ifCloud = 1;
@@ -141,11 +141,11 @@ void rfDtaProc()
 *********************************************************************************************************/
 void setup()
 {
-
-    BcnDrive.init();
+    
+    BcnDrive.init();                            // drive init
     BcnDrive.sysPowerOn();                      // power on
-    delay(500);
-
+    delay(200);                                 // wait for poweron complete
+    
     Serial1.begin(57600);                       // Serial1, to send/rev data from RFBee
     while(!Serial1);                            // Unitll Serial1 init over
     LightCom1.init(12);                         // light com  D12: input
@@ -168,14 +168,14 @@ void loop()
     APP.buttonManage();                         // button manage
     APP.workStateMachine();                     // state machine
     APP.getBatLev();                            // get batary level
-    serialEvent1();                             // check serial data
+    serialEventNode();                          // check serial data
 }
 
 /*********************************************************************************************************
 ** Function name:           serialEvent1
 ** Descriptions:            Serial1 event
 *********************************************************************************************************/
-void serialEvent1()
+void serialEventNode() 
 {
     while (Serial1.available())
     {

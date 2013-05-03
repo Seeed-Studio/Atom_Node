@@ -28,23 +28,20 @@
 
 class NodeCfg{
 
-    public:
+public:
 
     unsigned char ifSetDevice;          // if config device
     unsigned char idDevice;             // id of device
-
     unsigned char ifSetSensor;          // if config sensor
     unsigned char idSensor;             // id of sensor
-    unsigned char freqSensor;           //
-
+    unsigned char freqSensor;           // broadcast frequence
     unsigned char ifCloud;              // if there is a cloud in the net
-
     unsigned char ifSetActuator;        // if config actuator
     unsigned char idActuator;           // id of actuator
-
     unsigned char TC[12];               // TC
 
-    public:
+public:
+
     void init();
     bool lightConfig();                 // config!
 
