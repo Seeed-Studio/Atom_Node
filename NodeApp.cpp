@@ -143,8 +143,7 @@ bool BeaconApplication::isTrigger(unsigned char *dta)
 
             if(CONFIG.TC[1] == dta[FRAMEBITSRCID])
             {
-                tcNum = i+1;
-                return tcNum;
+                return 1;
             }
     }
 
@@ -211,7 +210,7 @@ void BeaconApplication::TriggerAnalog(unsigned char *dta)
         for(int i = 0; i<2; i++)
         {
             cmpDtaSet       = cmpDtaSet<<8;
-            cmpDtaSet      += CONFIG.TC[tcNum-1][EEPOFFSETACDATA+i];
+            cmpDtaSet      += CONFIG.TC[EEPOFFSETACDATA+i];
         }
     }
     else
@@ -219,7 +218,7 @@ void BeaconApplication::TriggerAnalog(unsigned char *dta)
     {
         cmpDtaSensor    = cmpDtaSensor<<8;
         cmpDtaSet       = cmpDtaSet<<8;
-        cmpDtaSet      += CONFIG.TC[tcNum-1][EEPOFFSETACDATA+i];
+        cmpDtaSet      += CONFIG.TC[EEPOFFSETACDATA+i];
         cmpDtaSensor   += dta[FRAMEBITDATA+i];
     }
 
@@ -227,7 +226,7 @@ void BeaconApplication::TriggerAnalog(unsigned char *dta)
      *      to give value to cmpLarge and cmpSmall
      */
 
-    switch(CONFIG.TC[tcNum-1][EEPOFFSETACOMTYPE])
+    switch(CONFIG.TC[EEPOFFSETACOMTYPE])
     {
         case COMPTYPEACGREAT:
         cmpLarge = 1023;
@@ -248,7 +247,7 @@ void BeaconApplication::TriggerAnalog(unsigned char *dta)
     unsigned char dtaCmp = (cmpDtaSensor >= cmpSmall && cmpDtaSensor <= cmpLarge);
 
     dtaAc[0] = 1;
-    dtaAc[1] = (CONFIG.TC[tcNum-1][EEPOFFSETACACTIONTYPE] == ACTIONTYPEON) ? dtaCmp : 1-dtaCmp;
+    dtaAc[1] = (CONFIG.TC[EEPOFFSETACACTIONTYPE] == ACTIONTYPEON) ? dtaCmp : 1-dtaCmp;
     ACTUATOR.driveActuator(dtaAc);
 }
 

@@ -30,7 +30,6 @@ class BeaconApplication{
 
 private:
 
-    unsigned char tcNum;                    // tc num
     unsigned int  cntButtonOn;              // button on counter
     unsigned int  cntButtonOff;             // button off counter
     unsigned int  cntButton;                // count button

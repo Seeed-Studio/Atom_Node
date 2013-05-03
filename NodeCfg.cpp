@@ -75,22 +75,19 @@ void BeaconConfig::init()
         idActuator = EEPROM.read(EEPADDACTUATORID);
 
         int eepAddOffCnt = 0;
-        for(int i = 0; i<nTC; i++)
-        {
-            TC[i][eepAddOffCnt] = EEPROM.read(EEPADDTCSTART + eepAddOffCnt);        // len of each tc
-            delay(5);
-            unsigned char cnTmp = TC[i][eepAddOffCnt++];
 
-            for(int j = 0; j<cnTmp; j++)                                            // read other data of tc
-            {
-                TC[i][eepAddOffCnt++] = EEPROM.read(EEPADDTCSTART + eepAddOffCnt);
-                delay(5);
-            }
+        TC[eepAddOffCnt] = EEPROM.read(EEPADDTCSTART + eepAddOffCnt);        // len of each tc
+
+        unsigned char cnTmp = TC[eepAddOffCnt++];
+
+        for(int j = 0; j<cnTmp; j++)                                            // read other data of tc
+        {
+            TC[eepAddOffCnt++] = EEPROM.read(EEPADDTCSTART + eepAddOffCnt);
         }
 
-        if(TC[0][0] > 10)
+        if(TC[0] > 10)
         {
-            TC[0][0] = 10;
+            TC[0] = 10;
         }
 
     }
