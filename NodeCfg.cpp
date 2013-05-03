@@ -76,7 +76,7 @@ void BeaconConfig::init()
 
         int eepAddOffCnt = 0;
 
-        TC[eepAddOffCnt] = EEPROM.read(EEPADDTCSTART + eepAddOffCnt);        // len of each tc
+        TC[eepAddOffCnt] = EEPROM.read(EEPADDTCSTART + eepAddOffCnt);           // len of each tc
 
         unsigned char cnTmp = TC[eepAddOffCnt++];
 
@@ -84,27 +84,7 @@ void BeaconConfig::init()
         {
             TC[eepAddOffCnt++] = EEPROM.read(EEPADDTCSTART + eepAddOffCnt);
         }
-
-        if(TC[0] > 10)
-        {
-            TC[0] = 10;
-        }
-
     }
-
-}
-
-/*********************************************************************************************************
-** Function name:           isLightConfig
-** Descriptions:            if get data from light sensor
-*********************************************************************************************************/
-unsigned char BeaconConfig::isLightConfig()
-{
-    if(LightCom1.isData())
-    {
-        return 1;
-    }
-    return 0;
 
 }
 

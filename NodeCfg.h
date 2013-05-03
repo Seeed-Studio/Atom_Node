@@ -53,7 +53,6 @@ class BeaconConfig{
     public:
     
     void init();
-    unsigned char isLightConfig();      // if get data from light sensor
     bool lightConfig();                 // config!
     
 };
