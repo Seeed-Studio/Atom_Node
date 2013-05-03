@@ -132,11 +132,9 @@ void BeaconApplication::sensorBroadCast()
 *********************************************************************************************************/
 bool BeaconApplication::isTrigger(unsigned char *dta)
 {
-    __printlnApp("GET IN ISTRIGGER!");
 
     if(CONFIG.ifSetActuator != 0x55)
     {
-        __printlnApp("ACTUATOR NO CONFIG!");
         return 0;
     }
     // it is a broadcast frame!
@@ -146,27 +144,12 @@ bool BeaconApplication::isTrigger(unsigned char *dta)
         {
             if(CONFIG.TC[i][1] == dta[FRAMEBITSRCID])
             {
-                __printApp("GET TRIGGER!!\t");
-                __printlnApp(i+1);
                 tcNum = i+1;
                 return tcNum;
             }
-            else
-            {
-                __printlnApp("SRCID ERR!!\t");
-                __printApp("tc[i][1] = ");
-                __printlnApp(CONFIG.TC[i][1]);
-                __printApp("dta[FRA..] = ");
-                __printlnApp(dta[FRAMEBITSRCID]); //CONFIG.idDevice
-                __printApp("CONFIG.idDevice = ");
-                __printlnApp(CONFIG.idDevice);
-            }
         }
     }
-    else
-    {
-        __printlnApp("NO TRIGGER!");
-    }
+
     return 0;
 }
 

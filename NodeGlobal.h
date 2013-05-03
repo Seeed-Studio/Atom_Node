@@ -24,7 +24,6 @@
 #ifndef __NODEGLOBAL_H__
 #define __NODEGLOBAL_H__
 
-#define __DebugApp                  0                   // debug i2c
 #define __SleepMode                 0                   // sleep mode
 
 #define _XBEE                       0
@@ -34,14 +33,6 @@
 #define BAUDRATE                    57600U
 #elif _RFBEE
 #define BAUDRATE                    38400U
-#endif
-
-#if __DebugApp
-#define __printApp(x)               __print(x)
-#define __printlnApp(x)             __println(x)
-#else
-#define __printApp(x)
-#define __printlnApp(x)
 #endif
 
 #define SendByteToRfbee             Serial1.write       // send a byte to Serial1
