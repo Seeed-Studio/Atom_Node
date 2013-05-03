@@ -28,6 +28,7 @@
 
 class BeaconConfig{
     
+    
     public:
     
     unsigned char ifSetDevice;          // if config device
