@@ -41,6 +41,7 @@ class BeaconConfig{
     
     unsigned char ifSetActuator;        // if config actuator
     unsigned char idActuator;           // id of actuator
+    
     unsigned char nTC;                  // number of trigger conditions
     unsigned char TC[NTR][12];          // TC
     
