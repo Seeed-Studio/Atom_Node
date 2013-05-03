@@ -45,8 +45,8 @@ unsigned char __GstringComplete    = 0;         // if get data
 *********************************************************************************************************/
 void timer1ISR()
 {
-    BeaconApp.appTimerIsr();                        // application isr
-    if(BeaconApp.workState == WORKSTATECFG)
+    APP.appTimerIsr();                        // application isr
+    if(APP.workState == WORKSTATECFG)
     {
         LightCom1.TIMEISR();                        // light com isr
     }
@@ -101,33 +101,33 @@ void rfDtaProc()
         if(__GdtaUart[FRAMEBITSRCID] == 0 && CONFIG.ifCloud == 0)               // cloud join
         {
             CONFIG.ifCloud = 1;
-            BeaconApp.carryDeviceId  = __GdtaUart[FRAMEBITSRCID];
-            BeaconApp.workStateCnt   = 0;
-            BeaconApp.workStateBuf   = BeaconApp.workState;
-            BeaconApp.stateChange(WORKSTATENARMAL);
-            BeaconApp.bdFreq         = __GdtaUart[FRAMEBITDATA];                // change freq
-            EEPROM.write(EEPADDFREQBROADCAST, BeaconApp.bdFreq);                // write to eeprom
+            APP.carryDeviceId  = __GdtaUart[FRAMEBITSRCID];
+            APP.workStateCnt   = 0;
+            APP.workStateBuf   = APP.workState;
+            APP.stateChange(WORKSTATENARMAL);
+            APP.bdFreq         = __GdtaUart[FRAMEBITDATA];                // change freq
+            EEPROM.write(EEPADDFREQBROADCAST, APP.bdFreq);                // write to eeprom
         }
         else if(__GdtaUart[FRAMEBITFRAME] == 4 && CONFIG.ifCloud==0)            // other device join
         {
-            BeaconApp.carryDeviceId  = __GdtaUart[FRAMEBITSRCID];
-            BeaconApp.workStateCnt   = 0;
-            BeaconApp.workStateBuf   = BeaconApp.workState;
-            BeaconApp.stateChange(WORKSTATENARMAL);
-            BeaconApp.bdFreq         = __GdtaUart[FRAMEBITDATA];                // change freq
-            EEPROM.write(EEPADDFREQBROADCAST, BeaconApp.bdFreq);                // write to eeprom
+            APP.carryDeviceId  = __GdtaUart[FRAMEBITSRCID];
+            APP.workStateCnt   = 0;
+            APP.workStateBuf   = APP.workState;
+            APP.stateChange(WORKSTATENARMAL);
+            APP.bdFreq         = __GdtaUart[FRAMEBITDATA];                // change freq
+            EEPROM.write(EEPADDFREQBROADCAST, APP.bdFreq);                // write to eeprom
         }
-        else if(__GdtaUart[FRAMEBITFRAME] == 5 && BeaconApp.workState == WORKSTATENARMAL)   // sync
+        else if(__GdtaUart[FRAMEBITFRAME] == 5 && APP.workState == WORKSTATENARMAL)   // sync
         {
-            if(BeaconApp.flgGetSync == 0)
+            if(APP.flgGetSync == 0)
             {
-                BeaconApp.workStateCnt = 0;
-                BeaconApp.flgGetSync   = 1;
+                APP.workStateCnt = 0;
+                APP.flgGetSync   = 1;
             }
         }
-        else if((BeaconApp.workState == WORKSTATECARRY || BeaconApp.workState == WORKSTATENARMAL) && BeaconApp.isTrigger(__GdtaUart))     // if the data trigger
+        else if((APP.workState == WORKSTATECARRY || APP.workState == WORKSTATENARMAL) && APP.isTrigger(__GdtaUart))     // if the data trigger
         {
-            BeaconApp.Trigger(__GdtaUart);
+            APP.Trigger(__GdtaUart);
         }
 
         __GdtaUartLen      = 0;
@@ -153,7 +153,7 @@ void setup()
     CONFIG.init();                              // init config
     SENSOR.init(CONFIG.idSensor);               // init sensor
     ACTUATOR.init(CONFIG.idActuator);           // init actuator
-    BeaconApp.init();                           // init application
+    APP.init();                                 // init application
     
     while(1)                                    // while button release
     {
@@ -174,9 +174,9 @@ void setup()
 void loop()
 {
     rfDtaProc();                                // data process
-    BeaconApp.buttonManage();                   // button manage
-    BeaconApp.workStateMachine();               // state machine
-    BeaconApp.getBatLev();                      // get batary level
+    APP.buttonManage();                   // button manage
+    APP.workStateMachine();               // state machine
+    APP.getBatLev();                      // get batary level
     serialEvent1();                             // check serial data
 }
 

@@ -179,7 +179,7 @@ bool NodeCfg::lightConfig()
     init();
     SENSOR.init(idSensor); 
     ACTUATOR.init(idActuator);
-    BeaconApp.init();
+    APP.init();
     return 1;
     
 }
