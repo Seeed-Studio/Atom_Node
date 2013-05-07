@@ -378,6 +378,7 @@ void NodeApp::buttonManage()
             if(workState == WORKSTATECFG)
             {
                 BcnDrive.setLedShine(LEDCOLORGREEN, 5);
+                BcnDrive.setLedShine(LEDCOLORRED, 5);
                 stateChange(workStateBuf);
             }
             else if(workStateBuf == WORKSTATECARRY || workStateBuf == WORKSTATENARMAL || workStateBuf == WORKSTATEJOIN)

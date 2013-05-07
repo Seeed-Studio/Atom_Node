@@ -175,7 +175,7 @@ bool NodeCfg::lightConfig()
         return 0;
     }
 
-    BcnDrive.setLedShine(LEDCOLORRED, 1);
+    BcnDrive.setLedShine(LEDCOLORRED, 10);
     BcnDrive.setLedShine(LEDCOLORGREEN, 1000000);
 
     init();

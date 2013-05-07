@@ -167,6 +167,7 @@ void setup()
 *********************************************************************************************************/
 void loop()
 {
+
     rfDtaProc();                                // data process
     APP.buttonManage();                         // button manage
     APP.workStateMachine();                     // state machine
