@@ -107,11 +107,15 @@ void NodeApp::sensorBroadCast()
     {
         dtaSendRf[i+5] = dtaSe[i+1];
     }
+    
     dtaSendRf[5+dtaSe[0]] = 0;
 
     sendDtaRfbee(6+dtaSe[0], dtaSendRf);
 
-    for(int i = 5+dtaSe[0]+4; i>=2; i--)
+    dtaSendRf[9+dtaSe[0]] = 0x45;
+    dtaSendRf[8+dtaSe[0]] = 0x2f;
+    
+    for(int i = 3+dtaSe[0]+4; i>=2; i--)
     {
         dtaSendRf[i] = dtaSendRf[i-2];
     }
